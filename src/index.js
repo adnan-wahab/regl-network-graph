@@ -1,47 +1,51 @@
 import KDBush from 'kdbush'
-import withThrottle from 'lodash-es/throttle'
 import withRaf from 'with-raf'
-import { mat4, vec4 } from 'gl-matrix'
+import {
+  mat4,
+  vec4
+} from 'gl-matrix'
 import _ from 'lodash'
 
 import processData from './processData';
 import createCurves from './curves'
 import dom2dCamera from './camera';
 
-import {createDrawPoints} from './points';
+import {
+  createDrawPoints
+} from './points';
 
 import * as d3 from 'd3'
 
-
 let createBrush = (container, graph, size) => {
-  let width = size[0], height = size[1]
+  let width = size[0],
+    height = size[1]
 
   const svg = d3.select(container).append("svg")
-      .attr("viewBox", [0, 0, width, height])
-      .property("value", [])
-      svg.style(
-        'position', 'absolute'
-      )
-      console.log(container, 'container')
-      //svg.style('top', '50')
-      svg.style('left', '0')
+    .attr("viewBox", [0, 0, width, height])
+    .property("value", [])
+  svg.style(
+    'position', 'absolute'
+  )
+  console.log(container, 'container')
+  //svg.style('top', '50')
+  svg.style('left', '0')
 
-      layerStack(svg.node(), 1)
+  layerStack(svg.node(), 1)
 
-container.style.position = "relative";
- container.style.width = width + 'px';
- container.style.height = height + 'px';
+  container.style.position = "relative";
+  container.style.width = width + 'px';
+  container.style.height = height + 'px';
 
   const brush = d3.brush()
-      .on("end", brushed)
-      // .on('end', ()=> {
-      //
-      //   svg.selectAll('.selection')
-      //   .transition().duration(500)
-      //   .ease(d3.easeLinear)
-      //   .attr('opacity', 0)
-      //
-      // })
+    .on("end", brushed)
+  // .on('end', ()=> {
+  //
+  //   svg.selectAll('.selection')
+  //   .transition().duration(500)
+  //   .ease(d3.easeLinear)
+  //   .attr('opacity', 0)
+  //
+  // })
 
   // const dot = svg.append("g")
   //     .attr("fill", "none")
@@ -54,7 +58,7 @@ container.style.position = "relative";
   //     .attr("r", 3);
 
   svg.call(brush);
-  svg.selectAll('.selection').attr('stroke', 'green')//.attr('fill', 'dark-green').attr('fill-opacity', .3)
+  svg.selectAll('.selection').attr('stroke', 'green') //.attr('fill', 'dark-green').attr('fill-opacity', .3)
 
   function brushed() {
     svg.selectAll('.selection').attr('opacity', 1).attr('fill', 'none')
@@ -107,7 +111,7 @@ import {
 
 
 let layerStack = (element, i) => {
-  if (! element) return console.log('element is null!')
+  if (!element) return console.log('element is null!')
   element.style.position = "absolute";
   element.style.top = 0
   element.style.left = 0;
@@ -132,22 +136,22 @@ const creategraph = (options) => {
     initialRegl = createRegl(canvas),
 
 
-  initialShowRecticle = DEFAULT_SHOW_RECTICLE,
-  initialRecticleColor = DEFAULT_RECTICLE_COLOR,
-  initialPointSize = DEFAULT_POINT_SIZE,
-  initialPointSizeSelected = DEFAULT_POINT_SIZE_SELECTED,
-  initialPointOutlineWidth = 2,
-  initialWidth = options.width || DEFAULT_WIDTH,
-  initialHeight = options.height || DEFAULT_HEIGHT,
-  initialTarget = DEFAULT_TARGET,
-  initialDistance = DEFAULT_DISTANCE,
-  initialRotation = DEFAULT_ROTATION,
-  initialView = DEFAULT_VIEW,
-  drawNodes = options.createDrawNodes || NOOP,
-  onHover = options.onHover || NOOP,
-  onClick = options.onClick || NOOP,
+    initialShowRecticle = DEFAULT_SHOW_RECTICLE,
+    initialRecticleColor = DEFAULT_RECTICLE_COLOR,
+    initialPointSize = DEFAULT_POINT_SIZE,
+    initialPointSizeSelected = DEFAULT_POINT_SIZE_SELECTED,
+    initialPointOutlineWidth = 2,
+    initialWidth = options.width || DEFAULT_WIDTH,
+    initialHeight = options.height || DEFAULT_HEIGHT,
+    initialTarget = DEFAULT_TARGET,
+    initialDistance = DEFAULT_DISTANCE,
+    initialRotation = DEFAULT_ROTATION,
+    initialView = DEFAULT_VIEW,
+    drawNodes = options.createDrawNodes || NOOP,
+    onHover = options.onHover || NOOP,
+    onClick = options.onClick || NOOP,
 
-  attributes = options.attributes;
+    attributes = options.attributes;
 
 
 
@@ -155,7 +159,7 @@ const creategraph = (options) => {
 
 
   const scratch = new Float32Array(16);
-  let mousePosition  = [0, 0];
+  let mousePosition = [0, 0];
   let pointList = []
 
   //props schema - make external
@@ -174,12 +178,19 @@ const creategraph = (options) => {
     edgeColors: true,
     selectedPoint: -1,
     favorites: [],
-    dateFilter: [0,Infinity],
-    camera: {view: () => {}},
-    projection:  new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]),
+    dateFilter: [0, Infinity],
+    camera: {
+      view: () => {}
+    },
+    projection: new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]),
     model: new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]),
     hoveredPoint: -1,
-    containerDimensions: { x: 0, y: 0, width: size[0], height: size[1]  },
+    containerDimensions: {
+      x: 0,
+      y: 0,
+      width: size[0],
+      height: size[1]
+    },
     size: size
   };
   window.state = state
@@ -187,12 +198,15 @@ const creategraph = (options) => {
 
   const getPointSize = () => state.pointSize * window.devicePixelRatio
   const getView = () => {
-    return state.camera.view}
+    return state.camera.view
+  }
 
   const getPositionBuffer = () => {
     return attributes.position
   }
-  const getModel = () => { return state.model }
+  const getModel = () => {
+    return state.model
+  }
   const getScaling = () => state.scaling
   const getNormalNumPoints = () => numPoints
 
@@ -200,15 +214,11 @@ const creategraph = (options) => {
 
   let width = initialWidth
   let height = initialHeight
-  const pointSize = initialPointSize
   let regl = initialRegl || createRegl(canvas)
   let camera
   let mouseDown = false
-  let mouseDownShift = false
   let mouseDownPosition = [0, 0]
   let numPoints = 0
-  let selection = []
-
   let searchIndex
   let viewAspectRatio
   const dataAspectRatio = DEFAULT_DATA_ASPECT_RATIO
@@ -239,7 +249,7 @@ const creategraph = (options) => {
     getNdcY(mousePosition[1])
   ]
 
-  const getScatterGlPos = (pos=getMouseGlPos()) => {
+  const getScatterGlPos = (pos = getMouseGlPos()) => {
     const [xGl, yGl] = pos
 
     //console.log(xGl, yGl)
@@ -252,13 +262,13 @@ const creategraph = (options) => {
       scratch,
       mat4.multiply(
         scratch,
-          state.projection,
+        state.projection,
         mat4.multiply(scratch, state.camera.view, state.model)
       )
     )
 
     // Translate vector
-    if (! mvp) mvp = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1] ;
+    if (!mvp) mvp = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     vec4.transformMat4(v, v, mvp)
 
     return v.slice(0, 2)
@@ -290,7 +300,10 @@ const creategraph = (options) => {
     let clostestPoint
 
     pointsInBBox.forEach(idx => {
-      const {x, y} = searchIndex.points[idx]
+      const {
+        x,
+        y
+      } = searchIndex.points[idx]
       const d = dist(x, y, mouseX, mouseY)
       if (d < minDist && attributes.stateIndex[1] !== 0) {
         minDist = d
@@ -313,7 +326,7 @@ const creategraph = (options) => {
     }
     console.log(state.selectedPoint = points[0])
 
-    if (! Array.isArray(points)) throw new Error('points must be a number or array')
+    if (!Array.isArray(points)) throw new Error('points must be a number or array')
 
     drawRaf() // eslint-disable-line no-use-before-define
   }
@@ -321,8 +334,8 @@ const creategraph = (options) => {
   let getRelativePosition = (pos) => {
     const rect = canvas.getBoundingClientRect()
 
-    pos[0] = (pos[0] - rect.left ) /// devicePixelRatio
-    pos[1] = (pos[1] - rect.top)  /// devicePixelRatio
+    pos[0] = (pos[0] - rect.left) /// devicePixelRatio
+    pos[1] = (pos[1] - rect.top) /// devicePixelRatio
     return [...pos]
   }
 
@@ -333,8 +346,8 @@ const creategraph = (options) => {
     // }
     const rect = event.target.getBoundingClientRect()
 
-    mousePosition[0] = (event.clientX - rect.left )// / devicePixelRatio
-    mousePosition[1] = (event.clientY - rect.top)  /// devicePixelRatio
+    mousePosition[0] = (event.clientX - rect.left) // / devicePixelRatio
+    mousePosition[1] = (event.clientY - rect.top) /// devicePixelRatio
 
     return [...mousePosition]
   }
@@ -375,7 +388,7 @@ const creategraph = (options) => {
     if (clostestPoint >= 0) events['nodeSelected'](pointList[clostestPoint], clostestPoint, event)
     if (event.shiftKey) {
       //updateCurves(pointList)
-    }else {}
+    } else {}
     //clostestPoint && updateCurves(pointList[clostestPoint], clostestPoint)
 
   }
@@ -384,7 +397,8 @@ const creategraph = (options) => {
   const blurHandler = () => {
     if (!isInit) return;
     events['blur']()
-    state.hoveredPoint = -1;  isMouseInCanvas = false;
+    state.hoveredPoint = -1;
+    isMouseInCanvas = false;
     mouseUpHandler();
     drawRaf(); // eslint-disable-line no-use-before-define
   };
@@ -400,9 +414,9 @@ const creategraph = (options) => {
       const clostestPoint = raycast()
       hover(clostestPoint)
       if (clostestPoint)
-      events.hover(clostestPoint, pointList[clostestPoint], event, coordinates) // eslint-disable-line no-use-before-define
+        events.hover(clostestPoint, pointList[clostestPoint], event, coordinates) // eslint-disable-line no-use-before-define
       else
-      events.hoverOff()
+        events.hoverOff()
       clostestPoint && updateCurves(pointList[clostestPoint], clostestPoint)
 
     }
@@ -429,7 +443,7 @@ const creategraph = (options) => {
   }
 
 
-    const drawPointBodies = createDrawPoints(regl, attributes)
+  const drawPointBodies = createDrawPoints(regl, attributes)
 
 
   const setPoints = newPoints => {
@@ -445,9 +459,9 @@ const creategraph = (options) => {
     if (!isInit) return
 
     //regl.clear({
-      //color: [1,1,1,1],
-      // color: BG_COLOR,
-      //depth: 1
+    //color: [1,1,1,1],
+    // color: BG_COLOR,
+    //depth: 1
     //})
 
 
@@ -491,8 +505,8 @@ const creategraph = (options) => {
   const setSize = (width, height) => {
     let dpi = window.devicePixelRatio
 
-    canvas.width =  dpi * width
-    canvas.height = dpi *  height
+    canvas.width = dpi * width
+    canvas.height = dpi * height
 
     canvas.style.width = width + 'px'
     canvas.style.height = height + 'px'
@@ -542,7 +556,7 @@ const creategraph = (options) => {
     drawRaf()
   }
 
-  let wheelDelta= 0;
+  let wheelDelta = 0;
   const wheelHandler = (e) => {
     events['wheel'](wheelDelta += e.wheelDelta)
     drawRaf();
@@ -553,7 +567,7 @@ const creategraph = (options) => {
 
   let resizeHandler = () => {
     if (canvas.toBoundingClientRect)
-    state.containerDimensions = (canvas).getBoundingClientRect()
+      state.containerDimensions = (canvas).getBoundingClientRect()
 
     let rect = state.containerDimensions
     size[0] = rect.width
@@ -568,7 +582,7 @@ const creategraph = (options) => {
     updateViewAspectRatio()
 
     // Set dimensions
-    setSize( width, height )
+    setSize(width, height)
 
 
     window.addEventListener('blur', blurHandler, false);
@@ -602,7 +616,9 @@ const creategraph = (options) => {
 
   const setState = (options) => {
     drawRaf()
-    _.each(options, (k,v) => { state[v] = k })
+    _.each(options, (k, v) => {
+      state[v] = k
+    })
   }
 
   let getNodeIndex = (uuid) => {
@@ -611,11 +627,11 @@ const creategraph = (options) => {
 
   let parseColor = (rgb) => {
     let c = d3.rgb(rgb)
-    return [c.r /255 , c.g /255 , c.b /255];
+    return [c.r / 255, c.g / 255, c.b / 255];
   }
 
   let eachNode = (indices, property, fn) => {
-    let list = Array.isArray(indices) ? indices: attributes.nodes.map((d,i) => i)
+    let list = Array.isArray(indices) ? indices : attributes.nodes.map((d, i) => i)
 
     list.forEach(idx => {
       fn(attributes[property][idx], attributes.nodes[idx])
@@ -624,7 +640,7 @@ const creategraph = (options) => {
   }
 
   let setNodeColor = (indices, val) => {
-    let list = Array.isArray(indices) ? indices: attributes.nodes.map((d,i) => i)
+    let list = Array.isArray(indices) ? indices : attributes.nodes.map((d, i) => i)
 
     list.forEach(idx => {
       let color = 'function' == typeof val ? val(attributes.nodes[idx], idx) : val
@@ -636,7 +652,7 @@ const creategraph = (options) => {
 
   let setNodeVisibility = (indices, val) => {
     //updateCurves(0)
-    let list = Array.isArray(indices) ? indices: attributes.nodes.map((d,i) => i)
+    let list = Array.isArray(indices) ? indices : attributes.nodes.map((d, i) => i)
     list.forEach(idx => {
       let show = 'function' == typeof val ? val(attributes.nodes[idx], idx) : val
       idx = typeof idx == 'number' ? idx : getNodeIndex(idx)
@@ -648,7 +664,7 @@ const creategraph = (options) => {
   }
 
   let setNodeSize = (indices, size) => {
-    let list = Array.isArray(indices) ? indices: attributes.nodes.map((d,i) => i)
+    let list = Array.isArray(indices) ? indices : attributes.nodes.map((d, i) => i)
     indices.forEach(idx => {
       let show = 'function' == typeof val ? val(attributes.nodes[idx], idx) : val
       idx = typeof idx == 'number' ? idx : getNodeIndex(idx)
@@ -661,7 +677,7 @@ const creategraph = (options) => {
   }
 
   let setFavorites = (indices) => {
-    let list = Array.isArray(indices) ? indices: [indices]
+    let list = Array.isArray(indices) ? indices : [indices]
     list.forEach(idx => {
       idx = typeof idx == 'number' ? idx : getNodeIndex(idx)
       attributes.stateIndex[idx][2] = -1
@@ -670,7 +686,7 @@ const creategraph = (options) => {
   }
 
   let setNodeShape = (indices, shape) => {
-    let list = Array.isArray(indices) ? indices: [indices]
+    let list = Array.isArray(indices) ? indices : [indices]
     list.forEach(idx => {
       idx = typeof idx == 'number' ? idx : getNodeIndex(idx)
       attributes.stateIndex[idx][2] = -shape
@@ -682,14 +698,14 @@ const creategraph = (options) => {
 
   let noop = () => {}
   let events = {
-    'blur' :noop,
-    'mousedown' :noop,
-    'mouseup' :noop,
-    'mousemove' :noop,
-    'mouseenter' :noop,
-    'mouseleave' :noop,
+    'blur': noop,
+    'mousedown': noop,
+    'mouseup': noop,
+    'mousemove': noop,
+    'mouseenter': noop,
+    'mouseleave': noop,
     'hoverOff': noop,
-    'click' :noop,
+    'click': noop,
     'wheel': noop,
     hover: noop,
     'nodeSelected': noop,
@@ -712,29 +728,36 @@ const creategraph = (options) => {
     saveScreenShot,
     eachNode: eachNode,
     toggleBrush: (bool) => {
-      d3.select('svg').style('display', (! bool) ? 'none' : 'unset')
+      d3.select('svg').style('display', (!bool) ? 'none' : 'unset')
     },
     brush: (selection, svg) => {
       console.log('wow wtf')
       let clipspace = function (pos) {
         return [2. * (pos[0] / width) - 1.,
-        1. - ((pos[1] / height) * 2.)]
+          1. - ((pos[1] / height) * 2.)
+        ]
       }
 
-       let p = selection.map(clipspace).map(getScatterGlPos)
+      let p = selection.map(clipspace).map(getScatterGlPos)
 
-      let [[x0, y0], [x1,  y1]] = p;
+      let [
+        [x0, y0],
+        [x1, y1]
+      ] = p;
       let poop
       let c = 0
       attributes.stateIndex.forEach((trip, idx) => {
-        let {x, y} = searchIndex.points[idx];
-        let inbox =  x > Math.min(x0, x1) &&
-         x < Math.max(x1, x0) &&
+        let {
+          x,
+          y
+        } = searchIndex.points[idx];
+        let inbox = x > Math.min(x0, x1) &&
+          x < Math.max(x1, x0) &&
           y > Math.min(y1, y0) &&
-           y < Math.max(y1, y0)
+          y < Math.max(y1, y0)
         //isPointInPolygon([clipX, clipY], p)
         if (inbox) c++
-        poop =  [x0 ,x ,  x1 ,    y0, y, y1]
+        poop = [x0, x, x1, y0, y, y1]
         trip[1] = inbox ? 10 : -20;
       })
       console.log(window.poop = poop)
@@ -752,7 +775,7 @@ const creategraph = (options) => {
     },
     zoomToNode: (id) => {
       let pos = attributes.position[id]
-      let xy = pos.slice(0,2)
+      let xy = pos.slice(0, 2)
       camera.lookAt(xy)
       draw()
       //camera.setView(mat4.clone(initialView))
@@ -790,6 +813,11 @@ const init = (props) => {
   return graph
 }
 
-export default { init }
+export default {
+  init
+}
 
-export { createRegl, createTextureFromUrl }
+export {
+  createRegl,
+  createTextureFromUrl
+}

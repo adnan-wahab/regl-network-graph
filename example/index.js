@@ -3,10 +3,6 @@ import * as d3 from 'd3'
 import _ from 'lodash'
 
 let main = () => {
-
-
-  //document.body.appendChild(canvas)
-
   load('./data/nestle-network.json')
 
   document.title = 'REGL NETWORK VIS'
