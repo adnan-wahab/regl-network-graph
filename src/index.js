@@ -332,9 +332,6 @@ const creategraph = (options) => {
     mouseDown = true
 
     mouseDownPosition = getRelativeMousePosition(event)
-    mouseDownShift = event.shiftKey
-
-
     // fix camera
     //if (mouseDownShift) camera.config({ isFixed: true })
   }
