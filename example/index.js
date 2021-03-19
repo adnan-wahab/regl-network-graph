@@ -4,8 +4,6 @@ import _ from 'lodash'
 
 let main = () => {
   load('./data/nestle-network.json')
-
-  document.title = 'REGL NETWORK VIS'
 }
 
 
@@ -37,7 +35,6 @@ let styles = {
 
 }
 
-let favorites = []
 let load = (url) => {
 
   fetch(url)
@@ -50,16 +47,8 @@ let load = (url) => {
           width: innerWidth * 1,
           height: innerHeight * .9,
           drawCurves: 1,
-          // onClick: (point, idx, events) => {
-          //   if (events.shiftKey)favorites = favorites.concat(idx)
-          //   graph.setState({favorites})
-          // }
         })
-        // graph.setState({flatSize: false})
-        let parseColor = (rgb) => {
-          let c = d3.rgb(rgb)
-          return [c.r /255 , c.g /255 , c.b /255];
-        }
+
           json.cluster_events.forEach((c) => {
             c.clusters.forEach((cluster, clusterIndex) => {
               graph.setNodeColor(cluster.nodes, cluster.color)
@@ -76,16 +65,6 @@ let load = (url) => {
             )
           })
         })
-         //
-         // graph.on('wheel', (delta) => {
-         //   graph.setState({sizeAttenuation: delta / 1000})
-         // })
-        // graph.setState({sizeAttenuation: 1})
-
-        //graph.on('hover', (d) => {console.log(d)})
-
-
-
 
         let tip = d3.select('body').append('div')
 
@@ -101,7 +80,6 @@ let load = (url) => {
         })
 
         graph.on('hoverOff', (i, node, event, coordinates) => {
-
           tip.style('display', 'none')
         })
 
