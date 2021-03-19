@@ -37,24 +37,6 @@ let createBrush = (container, graph, size) => {
 
   const brush = d3.brush()
     .on("end", brushed)
-  // .on('end', ()=> {
-  //
-  //   svg.selectAll('.selection')
-  //   .transition().duration(500)
-  //   .ease(d3.easeLinear)
-  //   .attr('opacity', 0)
-  //
-  // })
-
-  // const dot = svg.append("g")
-  //     .attr("fill", "none")
-  //     .attr("stroke", "steelblue")
-  //     .attr("stroke-width", 1.5)
-  //   .selectAll("g")
-  //   .data(data)
-  //   .join("circle")
-  //     .attr("transform", d => `translate(${x(d.x)},${y(d.y)})`)
-  //     .attr("r", 3);
 
   svg.call(brush);
   svg.selectAll('.selection').attr('stroke', 'green') //.attr('fill', 'dark-green').attr('fill-opacity', .3)
@@ -64,9 +46,7 @@ let createBrush = (container, graph, size) => {
 
     if (d3.event.selection) {
       graph.brush(d3.event.selection)
-      //value = data.filter(d => x0 <= x(d.x) && x(d.x) < x1 && y0 <= y(d.y) && y(d.y) < y1);
     }
-    //svg.property("value", value).dispatch("input");
   }
 }
 
@@ -133,8 +113,6 @@ const creategraph = (options) => {
   let container = options.container || document.body,
     canvas = createCanvas(container),
     initialRegl = createRegl(canvas),
-
-
     initialShowRecticle = DEFAULT_SHOW_RECTICLE,
     initialRecticleColor = DEFAULT_RECTICLE_COLOR,
     initialPointSize = DEFAULT_POINT_SIZE,
@@ -192,8 +170,6 @@ const creategraph = (options) => {
     },
     size: size
   };
-  window.state = state
-  window.projection = state.projection
 
   const getPointSize = () => state.pointSize * window.devicePixelRatio
   const getView = () => {
@@ -251,7 +227,6 @@ const creategraph = (options) => {
   const getScatterGlPos = (pos = getMouseGlPos()) => {
     const [xGl, yGl] = pos
 
-    //console.log(xGl, yGl)
     // Homogeneous vector
     const v = [xGl, yGl, 1, 1]
 
