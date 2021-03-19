@@ -23,10 +23,9 @@ let createBrush = (container, graph, size) => {
   const svg = d3.select(container).append("svg")
     .attr("viewBox", [0, 0, width, height])
     .property("value", [])
-  svg.style(
+    svg.style(
     'position', 'absolute'
   )
-  console.log(container, 'container')
   //svg.style('top', '50')
   svg.style('left', '0')
 
@@ -778,11 +777,8 @@ const creategraph = (options) => {
       let xy = pos.slice(0, 2)
       camera.lookAt(xy)
       draw()
-      //camera.setView(mat4.clone(initialView))
+
     },
-
-
-
     setSize,
     setNodeColor,
     setNodeSize,
@@ -799,7 +795,7 @@ const creategraph = (options) => {
     setState,
     getView,
   }
-  window.graph = graph
+
   if (options.brush) createBrush(document.body, graph, size)
   return graph
 }
