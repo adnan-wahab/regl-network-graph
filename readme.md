@@ -1,5 +1,5 @@
 
-<h1 align="center">deck.gl | <a href="http://defeated-produce.surge.sh/">Website</a></h1>
+<h1 align="center">deck.gl | <a href="http://adnanwahab.com/regl-network-graph/docs/">Website</a></h1>
 
 <h5 align="center"> WebGL2-powered, highly performant large-scale data visualization</h5>
 

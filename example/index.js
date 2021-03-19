@@ -6,7 +6,6 @@ let main = () => {
   load('./data/nestle-network.json')
 }
 
-
 let styles = {
     'font-size': '16px',
     'font-weight': '500',
@@ -32,11 +31,9 @@ let styles = {
     'padding': '12px',
     'opacity': '.8',
     'pointer-events': 'none'
-
 }
 
 let load = (url) => {
-
   fetch(url)
     .then((body)=>{ return body.json() })
     .then((json)=>{

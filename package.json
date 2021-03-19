@@ -16,8 +16,6 @@
     "package.json"
   ],
   "scripts": {
-    "build-storybook": "build-storybook -c .storybook -o .out",
-    "storybook": "start-storybook -s ./public -p 9001",
     "start": "webpack-dev-server --config ./webpack.config.js --mode development --open",
     "build": "rm -rf dist/*; rollup -c; webpack --config ./webpack.config.js --mode production",
     "build:watch": "rollup -c --watch",
@@ -40,10 +38,6 @@
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "@storybook/addon-actions": "^5.3.18",
-    "@storybook/addon-console": "^1.2.1",
-    "@storybook/addon-storysource": "^5.3.18",
-    "@storybook/html": "^5.3.18",
     "acorn": "^6.0.4",
     "babel-loader": "^8.0.4",
     "babel-plugin-lodash": "^3.3.4",
